@@ -61,6 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchActivity() {
 
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivity(new Intent(this, PhoneNumberLogin.class));
     }
 }

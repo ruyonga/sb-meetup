@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
+
+    <EditText
+        android:id="@+id/code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter verification code" />
+
+
+    <Button
+        android:id="@+id/verify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Verify"
+        android:textColor="#fff"
+        android:textSize="14sp" />
+
+</LinearLayout>
