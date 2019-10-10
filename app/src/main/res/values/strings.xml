@@ -15,4 +15,5 @@
     <string name="sb_monthly_meet_up">SB Monthly Meet Up</string>
     <string name="sign_in">Sign In</string>
     <string name="create_account">Create Account</string>
+    <string name="title_activity_phone_number_login">PhoneNumberLogin</string>
 </resources>

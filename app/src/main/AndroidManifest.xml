@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".PhoneNumberLogin"
+            android:label="@string/title_activity_phone_number_login"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".CreatePost"
             android:label="@string/title_activity_create_post"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
