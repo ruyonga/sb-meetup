@@ -15,6 +15,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.sb.model.User;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +33,11 @@ public class RegisterUser extends AppCompatActivity {
     Button register_button;
     @BindView(R.id.loading)
     ProgressBar loading;
+    FirebaseFirestore db;
+    @BindView(R.id.bio)
+    EditText bio;
+    @BindView(R.id.education)
+    EditText education;
     private FirebaseAuth mAuth;
 
     @Override
@@ -38,11 +46,11 @@ public class RegisterUser extends AppCompatActivity {
         setContentView(R.layout.activity_register_user);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         ButterKnife.bind(this);
 
-        /*
+        /**
          *
          * Validate the fields
          */
@@ -60,7 +68,6 @@ public class RegisterUser extends AppCompatActivity {
     }
 
     private void switchActivity() {
-
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -106,5 +113,19 @@ public class RegisterUser extends AppCompatActivity {
                         Toast.makeText(RegisterUser.this, "Display attached to profile", Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    /**
+     *
+     * Save a user extra information to the Fire store with document Id as user.uuid
+     * @param user
+     *
+     */
+    private void saveBio(FirebaseUser user) {
+        User acc = new User();
+        acc.setBio(bio.getText().toString());
+        acc.setEducation(education.getText().toString());
+
+        db.collection("users").document(user.getUid()).set(acc, SetOptions.merge());
     }
 }

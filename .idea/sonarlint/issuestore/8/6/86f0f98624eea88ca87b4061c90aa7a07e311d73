@@ -1,0 +1,6 @@
+
+?squid:S1148v"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+osquid:S00116!"WRename this field "login_button" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±ÈÍÝ
+Esquid:S1481W")Remove this unused "user" local variable.(ãÒ¦šùÿÿÿÿ
+Hsquid:S1602-",Remove useless curly braces around statement(ÚÈ¢ßúÿÿÿÿ
+asquid:CommentedOutCodeLine^"<This block of commented-out lines of code should be removed.(óÒªv
