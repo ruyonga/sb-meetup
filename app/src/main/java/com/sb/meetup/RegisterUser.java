@@ -1,6 +1,7 @@
 package com.sb.meetup;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 public class RegisterUser extends AppCompatActivity {
     @BindView(R.id.username)
@@ -27,7 +29,7 @@ public class RegisterUser extends AppCompatActivity {
     @BindView(R.id.displayname)
     EditText displayname;
     @BindView(R.id.register_button)
-    Button register_button;
+    Button registerButton;
     @BindView(R.id.loading)
     ProgressBar loading;
     private FirebaseAuth mAuth;
@@ -46,9 +48,16 @@ public class RegisterUser extends AppCompatActivity {
          *
          * Validate the fields
          */
-        register_button.setOnClickListener(v -> registerUser(username.getText().toString().trim(), password.getText().toString()));
+        registerButton.setOnClickListener(v -> registerUser(username.getText().toString().trim(), password.getText().toString()));
 
     }
+
+
+    /**
+     * Check if the current user is null before loading the register user Activity
+     * Null= not signed in
+     * NotNull = signed user.
+     */
 
     @Override
     public void onStart() {
@@ -60,7 +69,6 @@ public class RegisterUser extends AppCompatActivity {
     }
 
     private void switchActivity() {
-
         startActivity(new Intent(this, MainActivity.class));
     }
 
@@ -73,13 +81,13 @@ public class RegisterUser extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d("TAG", "createUserWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+                        assert user != null;
                         updateFields(user);
-                        switchActivity();
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w("TAG", "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(RegisterUser.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterUser.this, "Account Registration failed.."+task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
 
                     }
 
@@ -91,6 +99,8 @@ public class RegisterUser extends AppCompatActivity {
      * <p>
      * only limited to name and profile pic
      *
+     * Hard coded Image
+     *
      * @param user
      */
 
@@ -98,13 +108,23 @@ public class RegisterUser extends AppCompatActivity {
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(displayname.getText().toString().trim())
+                .setPhotoUri(Uri.parse("https://www.gstatic.com/mobilesdk/180227_mobilesdk/database_rules_zerostate.png"))
                 .build();
 
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(RegisterUser.this, "Display attached to profile", Toast.LENGTH_LONG).show();
+                        switchActivity();
+                        Toasty.success(RegisterUser.this, "Registration successful", Toast.LENGTH_LONG).show();
+
+                        Log.d("TAG", "updateFields:success");
+                    }else{
+                        Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(RegisterUser.this, "Account Registration failed.."+task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
                     }
                 });
     }
+
+
 }
