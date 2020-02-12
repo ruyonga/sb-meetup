@@ -2,6 +2,7 @@ package com.sb.meetup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,8 +27,14 @@ public class MainActivity extends AppCompatActivity {
     TextView email;
     @BindView(R.id.pp)
     ImageView pp;
+
     @BindView(R.id.logout_btn)
     Button logoutBtn;
+
+    @BindView(R.id.update)
+    Button update;
+
+    FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
     @Override
@@ -33,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         ButterKnife.bind(this);
 
@@ -41,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
             displayName.setText(mAuth.getCurrentUser().getDisplayName());
             email.setText(mAuth.getCurrentUser().getEmail());
             Glide.with(this)
-                        .load(mAuth.getCurrentUser()
-                    .getPhotoUrl())
+                    .load(mAuth.getCurrentUser()
+                            .getPhotoUrl())
                     .centerCrop().circleCrop()
                     .placeholder(R.mipmap.ic_launcher).into(pp);
         }
@@ -52,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
             switchActivity();
         });
 
+        update.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, ProfileAccount.class)));
+        moreInfo();
     }
-
 
 
     /**
@@ -73,5 +86,19 @@ public class MainActivity extends AppCompatActivity {
     private void switchActivity() {
 
         startActivity(new Intent(this, SignIn.class));
+    }
+
+    private void moreInfo() {
+        db.collection("users").document(mAuth.getCurrentUser().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+
+                    Log.d(getClass().getSimpleName(), documentSnapshot.get("address").toString());
+                }
+            }
+        });
+
+
     }
 }
