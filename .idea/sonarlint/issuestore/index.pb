@@ -12,3 +12,7 @@ b
 2app/src/main/java/com/sb/meetup/LoginActivity.java,1/0/10e131b2f8c7ecea3916ee22d0c524ac2d21195b
 a
 1app/src/main/java/com/sb/meetup/RegisterUser.java,b/8/b833256178ff35437f49db838c31372588e37176
+\
+,app/src/main/java/com/sb/meetup/Profile.java,9/0/9040a9eecc7b4b38c737b8000ab8cadc73ea3360
+X
+(app/src/main/java/com/sb/model/User.java,e/e/ee5b39f7bdfb177ed2ab5b74f846628b8737d5c5
