@@ -81,7 +81,7 @@ public class SignIn extends AppCompatActivity {
                         Log.d("TAG", "signInWithEmail:success");
                         FirebaseUser user = mAuth.getCurrentUser();
                         assert user != null;
-                        Toasty.success(SignIn.this, "Welcome back"+ user.getDisplayName(),Toast.LENGTH_SHORT).show();
+                        Toasty.success(SignIn.this, "Welcome back "+ user.getDisplayName(),Toast.LENGTH_SHORT).show();
 
                         switchActivity();
                     } else {

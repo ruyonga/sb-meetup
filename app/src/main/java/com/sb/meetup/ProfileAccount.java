@@ -2,15 +2,20 @@ package com.sb.meetup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.sb.meetup.models.UserModal;
@@ -32,6 +37,9 @@ public class ProfileAccount extends AppCompatActivity {
     @BindView(R.id.bio)
     EditText bio;
 
+    @BindView(R.id.loading)
+    ProgressBar progressBar;
+
     @BindView(R.id.update_profile)
     Button updateProfile;
 
@@ -51,7 +59,7 @@ public class ProfileAccount extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        moreInfo();
 
         updateProfile.setOnClickListener(v -> saveToFireStore());
     }
@@ -85,7 +93,7 @@ public class ProfileAccount extends AppCompatActivity {
                     Toasty.success(ProfileAccount.this, "Profile update Successful", Toast.LENGTH_LONG).show();
 
                     startActivity(new Intent(ProfileAccount.this, MainActivity.class));
-                });
+                }).addOnFailureListener(e -> Toasty.error(ProfileAccount.this, "Error loading profile info...", Toast.LENGTH_LONG).show());
 
 
     }
@@ -95,4 +103,28 @@ public class ProfileAccount extends AppCompatActivity {
         startActivity(new Intent(this, SignIn.class));
     }
 
+    private void moreInfo() {
+        progressBar.setVisibility(View.VISIBLE);
+        db.collection("users").document(mAuth.getCurrentUser().getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        progressBar.setVisibility(View.GONE);
+
+                        if (documentSnapshot.exists()) {
+                            UserModal user = documentSnapshot.toObject(UserModal.class);
+
+                            assert user != null;
+                            username.setText(user.getUsername());
+                            bio.setText(user.getBio());
+                            address.setText(user.getAddress());
+                            phonenumber.setText(user.getContact());
+                            Log.d(getClass().getSimpleName(), user.getAddress());
+                        }
+                    }
+                }).addOnFailureListener(e -> Toasty.error(ProfileAccount.this, "Error loading profile info...", Toast.LENGTH_LONG).show());
+
+
+    }
 }
