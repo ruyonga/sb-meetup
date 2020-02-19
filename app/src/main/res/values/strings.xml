@@ -16,4 +16,5 @@
     <string name="sign_in">Login </string>
     <string name="create_account">Create account</string>
     <string name="title_activity_sign_in">SignIn</string>
+    <string name="title_activity_profile_account">Profile Account</string>
 </resources>

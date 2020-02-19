@@ -12,6 +12,15 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".ProfileAccount"
+            android:label="@string/title_activity_profile_account"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sb.meetup.MainActivity" />
+        </activity>
+        <activity
             android:name=".SignIn"
             android:label="@string/title_activity_sign_in"
             android:parentActivityName=".MainActivity"
@@ -22,8 +31,7 @@
         </activity>
         <activity
             android:name=".PhoneNumberLogin"
-            android:label="@string/title_activity_phone_number_login"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreatePost"
             android:label="@string/title_activity_create_post"
